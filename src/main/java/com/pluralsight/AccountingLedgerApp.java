@@ -54,8 +54,35 @@ public class AccountingLedgerApp {
                 case "A" -> System.out.println("TODO: All");
                 case "D" -> System.out.println("TODO: Deposits");
                 case "P" -> System.out.println("TODO: Payments");
-                //case "R" -> runReportsScreen();
+                case "R" -> runReportsScreen();
                 case "H" -> running = false;
+                default -> System.out.println("Error that was not a option please pick one of the one's listed above");
+            }
+        }
+    }
+    public static void runReportsScreen() {
+        boolean running = true;
+
+        while (running) {
+            System.out.println();
+            System.out.println("==== REPORTS ====");
+            System.out.println("1) Month To Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year To Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search by Vendor");
+            System.out.println("0) Back");
+            System.out.print("Choose an options: ");
+
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1" -> System.out.println("TODO: Month To Date");
+                case "2" -> System.out.println("TODO: Previous Month");
+                case "3" -> System.out.println("TODO: Year To Date");
+                case "4" -> System.out.println("TODO: Previous Year");
+                case "5" -> System.out.println("TODO: Search by Vendor");
+                case "0" -> running = false;
                 default -> System.out.println("Error that was not a option please pick one of the one's listed above");
             }
         }
