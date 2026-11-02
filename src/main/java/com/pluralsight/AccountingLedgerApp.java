@@ -35,7 +35,7 @@ public class AccountingLedgerApp {
 
             switch (choice) {
                 case "D" -> addDeposit();
-                case "P" -> System.out.println("TODO: Make Payment");
+                case "P" -> makePayment();
                 case "L" -> runLedgerScreen();
                 case "X" -> {
                     System.out.println("Goodbye!");
@@ -114,6 +114,23 @@ public class AccountingLedgerApp {
         Transaction transaction = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
         saveTransaction(transaction);
         System.out.println("Deposit Saved");
+    }
+
+    public static void makePayment() {
+        System.out.println();
+        System.out.println("--- Make Payment ---");
+
+        String description = promptForString("Description: ");
+        String vendor = promptForString("Vendor: ");
+        double amount = promptForDouble("Amount: ");
+        while (amount <= 0) {
+            System.out.println("A payment amount must be more then 0.");
+            amount = promptForDouble("Amount: ");
+        }
+
+        Transaction transaction = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, -amount);
+        saveTransaction(transaction);
+        System.out.println("Payment Saved.");
     }
 
     public static void saveTransaction(Transaction transaction) {
