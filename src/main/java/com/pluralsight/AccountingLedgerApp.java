@@ -103,12 +103,12 @@ public class AccountingLedgerApp {
         System.out.println();
         System.out.println("--- Add Deposit ---");
 
-        String description = promptForString("Description");
-        String vendor = promptForString("Vendor: ");
-        double amount = promptForDouble("Amount: ");
+        String description = promptForString("Enter the Description");
+        String vendor = promptForString("Enter the Vendor: ");
+        double amount = promptForDouble("Enter the Amount: ");
         while (amount <= 0) {
             System.out.println("A payment amount must be more than 0");
-            amount = promptForDouble("Amount");
+            amount = promptForDouble("Enter the Correct Amount");
         }
 
         Transaction transaction = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
@@ -120,12 +120,12 @@ public class AccountingLedgerApp {
         System.out.println();
         System.out.println("--- Make Payment ---");
 
-        String description = promptForString("Description: ");
-        String vendor = promptForString("Vendor: ");
-        double amount = promptForDouble("Amount: ");
+        String description = promptForString("Enter the Description: ");
+        String vendor = promptForString("Enter the Vendor: ");
+        double amount = promptForDouble("Enter Amount: ");
         while (amount <= 0) {
             System.out.println("A payment amount must be more then 0.");
-            amount = promptForDouble("Amount: ");
+            amount = promptForDouble("Enter the Correct Amount: ");
         }
 
         Transaction transaction = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, -amount);
