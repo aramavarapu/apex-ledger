@@ -62,9 +62,9 @@ public class AccountingLedgerApp {
             String choice = scanner.nextLine().trim().toUpperCase();
 
             switch (choice) {
-                case "A" -> System.out.println("TODO: All");
-                case "D" -> System.out.println("TODO: Deposits");
-                case "P" -> System.out.println("TODO: Payments");
+                case "A" -> dispayAll();
+                case "D" -> displayDeposits();
+                case "P" -> displayPayments();
                 case "R" -> runReportsScreen();
                 case "H" -> running = false;
                 default -> System.out.println("Error that was not a option please pick one of the one's listed above");
@@ -88,11 +88,11 @@ public class AccountingLedgerApp {
             String choice = scanner.nextLine().trim();
 
             switch (choice) {
-                case "1" -> System.out.println("TODO: Month To Date");
-                case "2" -> System.out.println("TODO: Previous Month");
-                case "3" -> System.out.println("TODO: Year To Date");
-                case "4" -> System.out.println("TODO: Previous Year");
-                case "5" -> System.out.println("TODO: Search by Vendor");
+                case "1" -> displayMonthToDate();
+                case "2" -> displayPreviousMonth();
+                case "3" -> displayYearToDate();
+                case "4" -> displayPreviousYear();
+                case "5" -> searchByVendor();
                 case "0" -> running = false;
                 default -> System.out.println("Error that was not a option please pick one of the one's listed above");
             }
@@ -133,6 +133,45 @@ public class AccountingLedgerApp {
         System.out.println("Payment Saved.");
     }
 
+    public static void dispayAll() {
+        System.out.println("TODO: Display All");
+        pressEnterToContiune();
+    }
+
+    public static void displayDeposits() {
+        System.out.println("TODO: Display Deposits");
+        pressEnterToContiune();
+    }
+
+    public static void displayPayments() {
+        System.out.println("TODO: Display Payments");
+        pressEnterToContiune();
+    }
+
+    public static void displayMonthToDate() {
+        System.out.println("TODO: Display Month to Date");
+        pressEnterToContiune();
+    }
+
+    public static void displayPreviousMonth() {
+        System.out.println("TODO: Display Previous Month");
+        pressEnterToContiune();
+    }
+
+    public static void displayYearToDate() {
+        System.out.println("TODO: Display Year To Date");
+        pressEnterToContiune();
+    }
+
+    public static void displayPreviousYear() {
+        System.out.println("TODO: Display Previous Year");
+    }
+
+    public static void searchByVendor() {
+        System.out.println("TODO: Searh by Vendor");
+        pressEnterToContiune();
+    }
+
     public static void saveTransaction(Transaction transaction) {
         String line = transaction.getDate() + "|" + transaction.getTime().format(timeFormat) + "|" + transaction.getDescription() + "|" + transaction.getVendor() + "|" + String.format("%.2f", transaction.getAmount()) + "\n";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true)))
@@ -143,6 +182,11 @@ public class AccountingLedgerApp {
         }catch (IOException e) {
             System.out.println("The transaction could not be saved: " + e.getMessage());
         }
+    }
+
+    public static void pressEnterToContiune() {
+        System.out.println("Press Enter to continue");
+        scanner.nextLine();
     }
 
 
