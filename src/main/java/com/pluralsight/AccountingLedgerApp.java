@@ -1,10 +1,8 @@
 package com.pluralsight;
-import java.io.BufferedWriter;
+import java.io.*;
 import java.time.LocalTime;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 public class AccountingLedgerApp {
@@ -12,10 +10,12 @@ public class AccountingLedgerApp {
     private static Scanner scanner = new Scanner(System.in);
     static ArrayList<Transaction> transactions = new ArrayList<>();
 
+
     static String fileName = "transactions.csv";
     static DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public static void main(String[] args) {
+        loadTransactions();
         runHomeScreen();
     }
 
@@ -49,7 +49,7 @@ public class AccountingLedgerApp {
     public static void runLedgerScreen() {
         boolean running = true;
 
-        while(running) {
+        while (running) {
             System.out.println();
             System.out.println("=== LEDGER ===");
             System.out.println("A) All");
@@ -71,6 +71,7 @@ public class AccountingLedgerApp {
             }
         }
     }
+
     public static void runReportsScreen() {
         boolean running = true;
 
@@ -114,6 +115,7 @@ public class AccountingLedgerApp {
         Transaction transaction = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
         saveTransaction(transaction);
         System.out.println("Deposit Saved");
+        pressEnterToContinue();
     }
 
     public static void makePayment() {
@@ -131,36 +133,37 @@ public class AccountingLedgerApp {
         Transaction transaction = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, -amount);
         saveTransaction(transaction);
         System.out.println("Payment Saved.");
+        pressEnterToContinue();
     }
 
     public static void dispayAll() {
         System.out.println("TODO: Display All");
-        pressEnterToContiune();
+        pressEnterToContinue();
     }
 
     public static void displayDeposits() {
         System.out.println("TODO: Display Deposits");
-        pressEnterToContiune();
+        pressEnterToContinue();
     }
 
     public static void displayPayments() {
         System.out.println("TODO: Display Payments");
-        pressEnterToContiune();
+        pressEnterToContinue();
     }
 
     public static void displayMonthToDate() {
         System.out.println("TODO: Display Month to Date");
-        pressEnterToContiune();
+        pressEnterToContinue();
     }
 
     public static void displayPreviousMonth() {
         System.out.println("TODO: Display Previous Month");
-        pressEnterToContiune();
+        pressEnterToContinue();
     }
 
     public static void displayYearToDate() {
         System.out.println("TODO: Display Year To Date");
-        pressEnterToContiune();
+        pressEnterToContinue();
     }
 
     public static void displayPreviousYear() {
@@ -169,8 +172,36 @@ public class AccountingLedgerApp {
 
     public static void searchByVendor() {
         System.out.println("TODO: Searh by Vendor");
-        pressEnterToContiune();
+        pressEnterToContinue();
     }
+
+    public static void loadTransactions () {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            reader.readLine();
+
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.isBlank()) {
+                    continue;
+                }
+                String[] fields = line.split("\\|");
+
+                LocalDate date = LocalDate.parse(fields[0]);
+                LocalTime time = LocalTime.parse(fields[1]);
+                String description = fields[2];
+                String vendor = fields[3];
+                double amount = Double.parseDouble(fields[4]);
+
+                Transaction transaction = new Transaction(date, time, description, vendor, amount);
+                transactions.add(transaction);
+            }
+        } catch (IOException e) {
+            System.out.println("Could not load transaction");
+        }
+    }
+
+
 
     public static void saveTransaction(Transaction transaction) {
         String line = transaction.getDate() + "|" + transaction.getTime().format(timeFormat) + "|" + transaction.getDescription() + "|" + transaction.getVendor() + "|" + String.format("%.2f", transaction.getAmount()) + "\n";
@@ -184,7 +215,7 @@ public class AccountingLedgerApp {
         }
     }
 
-    public static void pressEnterToContiune() {
+    public static void pressEnterToContinue() {
         System.out.println("Press Enter to continue");
         scanner.nextLine();
     }
