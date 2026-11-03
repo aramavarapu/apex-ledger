@@ -177,26 +177,115 @@ public class AccountingLedgerApp {
     }
 
     public static void displayMonthToDate() {
-        System.out.println("TODO: Display Month to Date");
+        System.out.println();
+        System.out.println("--- Month To Date ---");
+        printHeader();
+
+        LocalDate today = LocalDate.now();
+        boolean found = false;
+
+        for (Transaction transaction : transactions) {
+            LocalDate date = transaction.getDate();
+            if (date.getMonthValue() == today.getMonthValue() && date.getYear() == today.getYear()) {
+                printTransaction(transaction);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No transactions found");
+        }
+        System.out.println();
         pressEnterToContinue();
     }
 
     public static void displayPreviousMonth() {
-        System.out.println("TODO: Display Previous Month");
+        System.out.println();
+        System.out.println("--- Previous Month ---");
+        printHeader();
+
+        LocalDate lastMonth = LocalDate.now().minusMonths(1);
+        boolean found = false;
+
+        for (Transaction transaction : transactions) {
+            LocalDate date = transaction.getDate();
+            if (date.getMonthValue() == lastMonth.getMonthValue() && date.getYear() == lastMonth.getYear()); {
+                printTransaction(transaction);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No transactions found");
+        }
+        System.out.println();
         pressEnterToContinue();
     }
 
     public static void displayYearToDate() {
-        System.out.println("TODO: Display Year To Date");
+        System.out.println();
+        System.out.println("--- Year To Date ---");
+        printHeader();
+
+        int thisYear = LocalDate.now().getYear();
+        boolean found = false;
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getDate().getYear() == thisYear) {
+                printTransaction(transaction);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No transactions found");
+        }
+        System.out.println();
         pressEnterToContinue();
     }
 
     public static void displayPreviousYear() {
-        System.out.println("TODO: Display Previous Year");
+        System.out.println();
+        System.out.println("--- Previous Year ---");
+        printHeader();
+
+        int lastYear = LocalDate.now().getYear() - 1;
+        boolean found = false;
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getDate().getYear() == lastYear) {
+                printTransaction(transaction);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No transaction found");
+        }
+        System.out.println();
+        pressEnterToContinue();
     }
 
     public static void searchByVendor() {
-        System.out.println("TODO: Searh by Vendor");
+        System.out.println();
+        System.out.println("--- Search by Vendor ---");
+
+        String vendor = promptForString("Vendor: ");
+        System.out.println();
+        printHeader();
+
+        boolean found = false;
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getVendor().equalsIgnoreCase(vendor)) {
+                printTransaction(transaction);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No transactions found");
+        }
+        System.out.println();
         pressEnterToContinue();
     }
 
