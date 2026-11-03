@@ -137,17 +137,42 @@ public class AccountingLedgerApp {
     }
 
     public static void dispayAll() {
-        System.out.println("TODO: Display All");
+        System.out.println();
+        System.out.println("--- All Transactions ---");
+        printHeader();
+
+        for (Transaction transaction : transactions) {
+            printTransaction(transaction);
+        }
+        System.out.println();
         pressEnterToContinue();
     }
 
     public static void displayDeposits() {
-        System.out.println("TODO: Display Deposits");
+        System.out.println();
+        System.out.println("--- Deposits ---");
+        printHeader();
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getAmount() > 0) {
+                printTransaction(transaction);
+            }
+        }
+        System.out.println();
         pressEnterToContinue();
     }
 
     public static void displayPayments() {
-        System.out.println("TODO: Display Payments");
+        System.out.println();
+        System.out.println("--- Payments ---");
+        printHeader();
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getAmount() < 0) {
+                printTransaction(transaction);
+            }
+        }
+        System.out.println();
         pressEnterToContinue();
     }
 
@@ -173,6 +198,14 @@ public class AccountingLedgerApp {
     public static void searchByVendor() {
         System.out.println("TODO: Searh by Vendor");
         pressEnterToContinue();
+    }
+
+    public static void printHeader() {
+        System.out.printf("%-12s %-10s %-28s %-18s %12s%n", "Date", "Time", "Description", "Vendor", "Amount");
+    }
+
+    public static void printTransaction(Transaction transaction) {
+        System.out.printf("%-12s %-10s %-28s %-18s %12s%n", transaction.getDate(), transaction.getTime().format(timeFormat), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
     }
 
     public static void loadTransactions () {
