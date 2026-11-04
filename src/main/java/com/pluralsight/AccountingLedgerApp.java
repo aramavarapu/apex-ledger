@@ -62,7 +62,7 @@ public class AccountingLedgerApp {
             String choice = scanner.nextLine().trim().toUpperCase();
 
             switch (choice) {
-                case "A" -> dispayAll();
+                case "A" -> displayAll();
                 case "D" -> displayDeposits();
                 case "P" -> displayPayments();
                 case "R" -> runReportsScreen();
@@ -108,7 +108,7 @@ public class AccountingLedgerApp {
         String vendor = promptForString("Enter the Vendor: ");
         double amount = promptForDouble("Enter the Amount: ");
         while (amount <= 0) {
-            System.out.println("A payment amount must be more than 0");
+            System.out.println("A deposit amount must be more than 0");
             amount = promptForDouble("Enter the Correct Amount");
         }
 
@@ -136,7 +136,7 @@ public class AccountingLedgerApp {
         pressEnterToContinue();
     }
 
-    public static void dispayAll() {
+    public static void displayAll() {
         System.out.println();
         System.out.println("--- All Transactions ---");
         printHeader();
@@ -209,7 +209,7 @@ public class AccountingLedgerApp {
 
         for (Transaction transaction : transactions) {
             LocalDate date = transaction.getDate();
-            if (date.getMonthValue() == lastMonth.getMonthValue() && date.getYear() == lastMonth.getYear()); {
+            if (date.getMonthValue() == lastMonth.getMonthValue() && date.getYear() == lastMonth.getYear()) {
                 printTransaction(transaction);
                 found = true;
             }
@@ -294,7 +294,7 @@ public class AccountingLedgerApp {
     }
 
     public static void printTransaction(Transaction transaction) {
-        System.out.printf("%-12s %-10s %-28s %-18s %12s%n", transaction.getDate(), transaction.getTime().format(timeFormat), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+        System.out.printf("%-12s %-10s %-28s %-18s %12.2f%n", transaction.getDate(), transaction.getTime().format(timeFormat), transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
     }
 
     public static void loadTransactions () {
@@ -359,7 +359,7 @@ public class AccountingLedgerApp {
 
     public static double promptForDouble(String prompt) {
         while (true) {
-            System.out.println(prompt);
+            System.out.print(prompt);
             try {
                 return Double.parseDouble(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
