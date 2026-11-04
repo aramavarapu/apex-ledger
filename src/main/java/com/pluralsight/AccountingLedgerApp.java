@@ -83,6 +83,7 @@ public class AccountingLedgerApp {
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
             System.out.println("5) Search by Vendor");
+            System.out.println("6) Custom Search");
             System.out.println("0) Back");
             System.out.print("Choose an options: ");
 
@@ -94,6 +95,7 @@ public class AccountingLedgerApp {
                 case "3" -> displayYearToDate();
                 case "4" -> displayPreviousYear();
                 case "5" -> searchByVendor();
+                case "6" -> customSearch();
                 case "0" -> running = false;
                 default -> System.out.println("That isn't an option. Try again.");
             }
@@ -287,6 +289,84 @@ public class AccountingLedgerApp {
         }
         System.out.println();
         pressEnterToContinue();
+    }
+
+    public static void customSearch() {
+        System.out.println();
+        System.out.println("--- Custom Search ---");
+        System.out.println("Answer only the question you care about. Press Enter to skip one.");
+
+        System.out.print("Start date (yyyy-MM-dd): ");
+        String startInput = scanner.nextLine().trim();
+
+        System.out.print("End date (yyyy-MM-dd): ");
+        String endInput = scanner.nextLine().trim();
+
+        System.out.print("Description: ");
+        String description = scanner.nextLine().trim();
+
+        System.out.print("Vendor: ");
+        String vendor = scanner.nextLine().trim();
+
+        System.out.print("Amount: ");
+        String amountInput = scanner.nextLine().trim();
+
+        LocalDate startDate = null;
+        LocalDate endDate = null;
+        Double amount = null;
+
+        if (!startInput.isEmpty()) {
+            startDate = LocalDate.parse(startInput);
+        }
+
+        if (!endInput.isEmpty()) {
+            endDate = LocalDate.parse(endInput);
+        }
+
+        if (!amountInput.isEmpty()) {
+            amount = Double.parseDouble(amountInput);
+        }
+
+        System.out.println();
+        printHeader();
+
+        boolean found = false;
+
+        for (Transaction transaction : transactions) {
+            boolean matches = true;
+
+            if (startDate != null && transaction.getDate().isBefore(startDate)) {
+                matches = false;
+            }
+
+            if (endDate != null && transaction.getDate().isAfter(endDate)) {
+                matches = false;
+            }
+
+            if (!description.isEmpty() && !transaction.getDescription().toLowerCase().contains(description.toLowerCase())) {
+                matches = false;
+            }
+
+            if (!vendor.isEmpty() && !transaction.getVendor().equalsIgnoreCase(vendor)) {
+                matches = false;
+            }
+
+            if (amount!= null && Double.compare(transaction.getAmount(), amount) != 0) {
+                matches = false;
+            }
+
+            if (matches) {
+                printTransaction(transaction);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No transactions found");
+        }
+        System.out.println();
+        pressEnterToContinue();
+
     }
 
     public static void printHeader() {
