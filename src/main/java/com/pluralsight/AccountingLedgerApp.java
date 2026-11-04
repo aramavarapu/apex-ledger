@@ -41,7 +41,7 @@ public class AccountingLedgerApp {
                     System.out.println("Goodbye!");
                     running = false;
                 }
-                default -> System.out.println("Error that is not a option please pick one of the one's listed above");
+                default -> System.out.println("That isn't an option. Try again.");
             }
         }
     }
@@ -67,7 +67,7 @@ public class AccountingLedgerApp {
                 case "P" -> displayPayments();
                 case "R" -> runReportsScreen();
                 case "H" -> running = false;
-                default -> System.out.println("Error that was not a option please pick one of the one's listed above");
+                default -> System.out.println("That isn't an option. Try again.");
             }
         }
     }
@@ -95,7 +95,7 @@ public class AccountingLedgerApp {
                 case "4" -> displayPreviousYear();
                 case "5" -> searchByVendor();
                 case "0" -> running = false;
-                default -> System.out.println("Error that was not a option please pick one of the one's listed above");
+                default -> System.out.println("That isn't an option. Try again.");
             }
         }
     }
@@ -104,12 +104,12 @@ public class AccountingLedgerApp {
         System.out.println();
         System.out.println("--- Add Deposit ---");
 
-        String description = promptForString("Enter the Description");
+        String description = promptForString("Enter the Description: ");
         String vendor = promptForString("Enter the Vendor: ");
         double amount = promptForDouble("Enter the Amount: ");
         while (amount <= 0) {
             System.out.println("A deposit amount must be more than 0");
-            amount = promptForDouble("Enter the Correct Amount");
+            amount = promptForDouble("Enter the Correct Amount: ");
         }
 
         Transaction transaction = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
@@ -126,7 +126,7 @@ public class AccountingLedgerApp {
         String vendor = promptForString("Enter the Vendor: ");
         double amount = promptForDouble("Enter Amount: ");
         while (amount <= 0) {
-            System.out.println("A payment amount must be more then 0.");
+            System.out.println("A payment amount must be more than 0.");
             amount = promptForDouble("Enter the Correct Amount: ");
         }
 
