@@ -288,7 +288,7 @@ public class AccountingLedgerApp {
             if (!vendor.isEmpty() && !transaction.getVendor().toLowerCase().contains(vendor)) {
                 continue;
             }
-            if (amount != null && Double.compare(transaction.getAmount(), amount) != 0) {
+            if (amount != null && Math.abs(transaction.getAmount() - amount) >= 0.001) {
                 continue;
             }
             matches.add(transaction);
