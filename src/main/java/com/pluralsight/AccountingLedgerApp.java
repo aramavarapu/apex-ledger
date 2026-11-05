@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 public class AccountingLedgerApp {
 
     private static Scanner scanner = new Scanner(System.in);
@@ -296,11 +297,15 @@ public class AccountingLedgerApp {
         System.out.println("--- Custom Search ---");
         System.out.println("Answer only the question you care about. Press Enter to skip one.");
 
-        System.out.print("Start date (yyyy-MM-dd): ");
-        String startInput = scanner.nextLine().trim();
+        LocalDate startDate = promptForOptionalDate("Start date (yyyy-MM-dd): ");
+        LocalDate endDate = promptForOptionalDate("End date (yyyy-MM-dd): ");
 
-        System.out.print("End date (yyyy-MM-dd): ");
-        String endInput = scanner.nextLine().trim();
+        if (startDate != null && endDate != null && endDate.isBefore(startDate)) {
+            System.out.println("End date can't be before the start date ");
+            pressEnterToContinue();
+            return;
+        }
+
 
         System.out.print("Description: ");
         String description = scanner.nextLine().trim();
@@ -308,24 +313,7 @@ public class AccountingLedgerApp {
         System.out.print("Vendor: ");
         String vendor = scanner.nextLine().trim();
 
-        System.out.print("Amount: ");
-        String amountInput = scanner.nextLine().trim();
-
-        LocalDate startDate = null;
-        LocalDate endDate = null;
-        Double amount = null;
-
-        if (!startInput.isEmpty()) {
-            startDate = LocalDate.parse(startInput);
-        }
-
-        if (!endInput.isEmpty()) {
-            endDate = LocalDate.parse(endInput);
-        }
-
-        if (!amountInput.isEmpty()) {
-            amount = Double.parseDouble(amountInput);
-        }
+        Double amount = promptForOptionalDouble("Amount: ");
 
         System.out.println();
         printHeader();
@@ -422,10 +410,48 @@ public class AccountingLedgerApp {
         scanner.nextLine();
     }
 
+    public static LocalDate promptForOptionalDate (String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                return null;
+            }
+            try {
+                return LocalDate.parse(input);
+            } catch (DateTimeParseException e) {
+                System.out.println("Enter a date like 2026-05-05");
+            }
+        }
+    }
+
+    public static Double promptForOptionalDouble (String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                return  null;
+            }
+            try {
+                double value = Double.parseDouble(input);
+                if (Double.isNaN(value) || Double.isInfinite(value)) {
+                    System.out.println("Enter a number, like 77.77, or press Enter to skip");
+                    continue;
+                }
+                return value;
+            } catch (NumberFormatException e) {
+                System.out.println("Enter a number, like 77.77, or press Enter to skip");
+            }
+        }
+    }
+
+
 
     public static String promptForString(String prompt) {
         while (true) {
-            System.out.println(prompt);
+            System.out.print(prompt);
             String input = scanner.nextLine().trim();
             if (input.isEmpty()) {
                 System.out.println("This can't be blank");
