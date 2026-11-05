@@ -140,133 +140,90 @@ public class AccountingLedgerApp {
     }
 
     public static void displayAll() {
-        System.out.println();
-        System.out.println("--- All Transactions ---");
-        printHeader();
+        ArrayList<Transaction> results = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
-            printTransaction(transaction);
+            results.add(transaction);
         }
-        System.out.println();
-        pressEnterToContinue();
+        displayResults(results, "--- All Transactions ---");
     }
 
     public static void displayDeposits() {
-        System.out.println();
-        System.out.println("--- Deposits ---");
-        printHeader();
+        ArrayList<Transaction> results = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
             if (transaction.getAmount() > 0) {
-                printTransaction(transaction);
+                results.add(transaction);
             }
         }
-        System.out.println();
-        pressEnterToContinue();
+        displayResults(results, "--- Deposits ---");
     }
 
     public static void displayPayments() {
-        System.out.println();
-        System.out.println("--- Payments ---");
-        printHeader();
+        ArrayList<Transaction> results = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
             if (transaction.getAmount() < 0) {
-                printTransaction(transaction);
+                results.add(transaction);
             }
         }
-        System.out.println();
-        pressEnterToContinue();
+        displayResults(results, "--- Payments ---");
     }
 
     public static void displayMonthToDate() {
-        System.out.println();
-        System.out.println("--- Month To Date ---");
-        printHeader();
+        ArrayList<Transaction> results = new ArrayList<>();
 
         LocalDate today = LocalDate.now();
-        boolean found = false;
 
         for (Transaction transaction : transactions) {
             LocalDate date = transaction.getDate();
+
             if (date.getMonthValue() == today.getMonthValue() && date.getYear() == today.getYear()) {
-                printTransaction(transaction);
-                found = true;
+                results.add(transaction);
             }
         }
-
-        if (!found) {
-            System.out.println("No transactions found");
-        }
-        System.out.println();
-        pressEnterToContinue();
+        displayResults(results, "--- Month To Date ---");
     }
 
     public static void displayPreviousMonth() {
-        System.out.println();
-        System.out.println("--- Previous Month ---");
-        printHeader();
+        ArrayList<Transaction> results = new ArrayList<>();
 
         LocalDate lastMonth = LocalDate.now().minusMonths(1);
-        boolean found = false;
 
         for (Transaction transaction : transactions) {
             LocalDate date = transaction.getDate();
+
             if (date.getMonthValue() == lastMonth.getMonthValue() && date.getYear() == lastMonth.getYear()) {
-                printTransaction(transaction);
-                found = true;
+                results.add(transaction);
             }
         }
-
-        if (!found) {
-            System.out.println("No transactions found");
-        }
-        System.out.println();
-        pressEnterToContinue();
+        displayResults(results, "--- Previous Month ---");
     }
 
     public static void displayYearToDate() {
-        System.out.println();
-        System.out.println("--- Year To Date ---");
-        printHeader();
+        ArrayList<Transaction> results = new ArrayList<>();
 
         int thisYear = LocalDate.now().getYear();
-        boolean found = false;
 
         for (Transaction transaction : transactions) {
             if (transaction.getDate().getYear() == thisYear) {
-                printTransaction(transaction);
-                found = true;
+                results.add(transaction);
             }
         }
-
-        if (!found) {
-            System.out.println("No transactions found");
-        }
-        System.out.println();
-        pressEnterToContinue();
+        displayResults(results, "--- Year To Date ---");
     }
 
     public static void displayPreviousYear() {
-        System.out.println();
-        System.out.println("--- Previous Year ---");
-        printHeader();
+        ArrayList<Transaction> results = new ArrayList<>();
 
         int lastYear = LocalDate.now().getYear() - 1;
-        boolean found = false;
 
         for (Transaction transaction : transactions) {
             if (transaction.getDate().getYear() == lastYear) {
-                printTransaction(transaction);
-                found = true;
+                results.add(transaction);
             }
         }
-
-        if (!found) {
-            System.out.println("No transaction found");
-        }
-        System.out.println();
-        pressEnterToContinue();
+        displayResults(results, "--- Previous Year ---");
     }
 
     public static void searchByVendor() {
@@ -274,22 +231,16 @@ public class AccountingLedgerApp {
         System.out.println("--- Search by Vendor ---");
 
         String vendor = promptForString("Vendor: ");
-        System.out.println();
-        printHeader();
 
-        boolean found = false;
+        ArrayList<Transaction> results = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
             if (transaction.getVendor().equalsIgnoreCase(vendor)) {
-                printTransaction(transaction);
-                found = true;
+                results.add(transaction);
             }
         }
-        if (!found) {
-            System.out.println("No transactions found");
-        }
-        System.out.println();
-        pressEnterToContinue();
+        displayResults(results, "--- Vendor Search Results ---");
+
     }
 
     public static void customSearch() {
@@ -315,46 +266,50 @@ public class AccountingLedgerApp {
 
         Double amount = promptForOptionalDouble("Amount: ");
 
-        System.out.println();
-        printHeader();
+        ArrayList<Transaction> results = findTransactions(startDate, endDate, description, vendor, amount);
+        displayResults(results, "--- Custom Search Results ---");
 
-        boolean found = false;
+
+    }
+
+    public static ArrayList<Transaction> findTransactions(LocalDate startDate, LocalDate endDate, String description, String vendor, Double amount) {
+        ArrayList<Transaction> matches = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
-            boolean matches = true;
-
             if (startDate != null && transaction.getDate().isBefore(startDate)) {
-                matches = false;
+                continue;
             }
-
             if (endDate != null && transaction.getDate().isAfter(endDate)) {
-                matches = false;
+                continue;
             }
-
             if (!description.isEmpty() && !transaction.getDescription().toLowerCase().contains(description.toLowerCase())) {
-                matches = false;
+                continue;
             }
-
-            if (!vendor.isEmpty() && !transaction.getVendor().equalsIgnoreCase(vendor)) {
-                matches = false;
+            if (!vendor.isEmpty() && !transaction.getVendor().toLowerCase().contains(vendor)) {
+                continue;
             }
-
-            if (amount!= null && Double.compare(transaction.getAmount(), amount) != 0) {
-                matches = false;
+            if (amount != null && Double.compare(transaction.getAmount(), amount) != 0) {
+                continue;
             }
-
-            if (matches) {
-                printTransaction(transaction);
-                found = true;
-            }
+            matches.add(transaction);
         }
+        return matches;
+    }
 
-        if (!found) {
+    public static void displayResults(ArrayList<Transaction> results, String title) {
+        System.out.println();
+        System.out.println(title);
+        printHeader();
+
+        if(results.isEmpty()) {
             System.out.println("No transactions found");
+        } else {
+            for (Transaction transaction : results) {
+                printTransaction(transaction);
+            }
         }
         System.out.println();
         pressEnterToContinue();
-
     }
 
     public static void printHeader() {
