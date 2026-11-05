@@ -8,6 +8,7 @@ An app for tracking every deposit and payment for a business or for personal use
 - The user can view all transactions or view payments and deposits separately.
 - Entries are listed oldest first, and the newest at the bottom.
 - Generate Reports: Month To Date, Previous Month, Year To Date, Previous Year, and Search by Vendor.
+- Custom Search lets you combine filters such as dates, description, vendor, and amount in one search.
 - Messages for a wrong menu choice, a bad amount, or a report with no matches.
 - Save and load transactions using a CSV file.
 
