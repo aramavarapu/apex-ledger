@@ -264,7 +264,7 @@ public class AccountingLedgerApp {
         System.out.print("Vendor: ");
         String vendor = scanner.nextLine().trim();
 
-        Double amount = promptForOptionalDouble("Amount: ");
+        Double amount = promptForOptionalDouble("Amount (use a negative number for payments): ");
 
         ArrayList<Transaction> results = findTransactions(startDate, endDate, description, vendor, amount);
         displayResults(results, "--- Custom Search Results ---");
@@ -285,7 +285,7 @@ public class AccountingLedgerApp {
             if (!description.isEmpty() && !transaction.getDescription().toLowerCase().contains(description.toLowerCase())) {
                 continue;
             }
-            if (!vendor.isEmpty() && !transaction.getVendor().toLowerCase().contains(vendor)) {
+            if (!vendor.isEmpty() && !transaction.getVendor().toLowerCase().contains(vendor.toLowerCase())) {
                 continue;
             }
             if (amount != null && Math.abs(transaction.getAmount() - amount) >= 0.001) {
