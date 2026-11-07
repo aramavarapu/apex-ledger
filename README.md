@@ -15,7 +15,7 @@ An app for tracking every deposit and payment for a business or for personal use
 ## How to run it
 
 1. Clone the repository and open it in IntelliJ
-2. Run `[AccountingLedgerApp].java`
+2. Run `AccountingLedgerApp.java`
 3. Type a letter from the Home menu, like `L` for the Ledger, and press Enter
 
 ## Interesting code
@@ -23,15 +23,19 @@ An app for tracking every deposit and payment for a business or for personal use
 The Previous Month report needs to handle January, where if the previous month is December of last year. Instead of using an if for that case, minusMonths(1) does it for me, because Java changes the year when it has to.
 LocalDate lastMonth = LocalDate.now().minusMonths(1);
 ```java
-LocalDate lastMonth = LocalDate.now().minusMonths(1);
-boolean found = false;
+public static void displayPreviousMonth() {
+    ArrayList<Transaction> results = new ArrayList<>();
 
-        for (Transaction transaction : transactions) {
-LocalDate date = transaction.getDate();
-            if (date.getMonthValue() == lastMonth.getMonthValue() && date.getYear() == lastMonth.getYear()) {
-printTransaction(transaction);
-found = true;
+    LocalDate lastMonth = LocalDate.now().minusMonths(1);
+
+    for (Transaction transaction : transactions) {
+        LocalDate date = transaction.getDate();
+
+        if (date.getMonthValue() == lastMonth.getMonthValue() && date.getYear() == lastMonth.getYear()) {
+            results.add(transaction);
         }
+    }
+    displayResults(results, "--- Previous Month ---");
 }
 ```
 ## Screenshots
@@ -41,7 +45,7 @@ found = true;
 ![The reports screen menu](images/img_2.png)
 
 ## Author
-Aup Ramavarapu, Year Up Java Academy
+Anup Ramavarapu, Year Up Java Academy
 
 
 
