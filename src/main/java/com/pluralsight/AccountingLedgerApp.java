@@ -86,7 +86,7 @@ public class AccountingLedgerApp {
             System.out.println("5) Search by Vendor");
             System.out.println("6) Custom Search");
             System.out.println("0) Back");
-            System.out.print("Choose an options: ");
+            System.out.print("Choose an option: ");
 
             String choice = scanner.nextLine().trim();
 
