@@ -21,7 +21,6 @@ An app for tracking every deposit and payment for a business or for personal use
 ## Interesting code
 
 The Previous Month report needs to handle January, where if the previous month is December of last year. Instead of using an if for that case, minusMonths(1) does it for me, because Java changes the year when it has to.
-LocalDate lastMonth = LocalDate.now().minusMonths(1);
 ```java
 public static void displayPreviousMonth() {
     ArrayList<Transaction> results = new ArrayList<>();
